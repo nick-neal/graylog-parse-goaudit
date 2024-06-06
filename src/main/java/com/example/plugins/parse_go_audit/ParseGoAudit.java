@@ -447,7 +447,7 @@ public class ParseGoAudit {
         StringJoiner summary = new StringJoiner(" ");
 
         // check if syscall is logged
-        if result.has("syscall") {
+        if (result.has("syscall")) {
             // if auid exists and is not equal to uid, output auid user's name
             if (
                 result.getJSONObject("syscall").has("auid") && 
