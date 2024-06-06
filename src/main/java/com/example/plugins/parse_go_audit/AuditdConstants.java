@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AuditdConstants {
-    public static final Map<String, Integer> TYPES;
+    public static final Map<String, Integer> TYPES = new HashMap<>();
     public static final Map<String, Integer> ARCH = new HashMap<>();
     public static final Map<Integer, String> MACHINES = new HashMap<>();
     public static final Map<String, Map<String, String>> SYSCALLS = new HashMap<>();
     public static final Map<Integer, String> ADDRESS_FAMILIES = new HashMap<>();
 
     static {
-        Map<String, Integer> types = new HashMap<>();
+        
         TYPES.put("syscall", 1300);        // Syscall event
         TYPES.put("path", 1302);           // Filename path information
         TYPES.put("ipc", 1303);            // IPC record
