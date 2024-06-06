@@ -437,7 +437,7 @@ public class ParseGoAudit {
 
     private static String get_path_name(JSONObject path) {
         if (path != null && path.has("name")) {
-            return path.get("name");
+            return path.getString("name");
         } 
 
         return null;
