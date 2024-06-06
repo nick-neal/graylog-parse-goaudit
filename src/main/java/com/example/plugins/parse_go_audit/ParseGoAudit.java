@@ -81,11 +81,11 @@ public class ParseGoAudit {
         syscall_map.put("session_id", syscall_map.remove("ses"));
 
         // if syscall function name defined in auditd constants, add to data.
-        //if (arch_map != null && 
-        //    AuditdConstants.SYSCALLS.containsKey(arch_map.get("name")) &&
-        //    AuditdConstants.SYSCALLS.get(arch_map.get("name")).containsKey(syscall_map.get("id"))) {
-        //        syscall_map.put("name", AuditdConstants.SYSCALLS.get(arch_map.get("name")).get(syscall_map.get("id")));
-        //    }
+        if (arch_map != null && 
+            AuditdConstants.SYSCALLS.containsKey(arch_map.get("name")) &&
+            AuditdConstants.SYSCALLS.get(arch_map.get("name")).containsKey(syscall_map.get("id"))) {
+                syscall_map.put("name", AuditdConstants.SYSCALLS.get(arch_map.get("name")).get(syscall_map.get("id")));
+            }
         
         // convert some values
         syscall_map.put("key", convert_value(syscall_map.get("key"), true));
