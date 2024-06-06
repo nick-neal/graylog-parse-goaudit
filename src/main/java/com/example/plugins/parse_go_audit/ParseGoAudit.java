@@ -551,7 +551,7 @@ public class ParseGoAudit {
             summary.add("none");
         }
 
-        result.put("summary", summary.toString())
+        result.put("summary", summary.toString());
 
     }
 }
