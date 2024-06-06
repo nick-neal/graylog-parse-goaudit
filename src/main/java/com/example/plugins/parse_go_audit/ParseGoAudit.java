@@ -10,6 +10,35 @@ public class ParseGoAudit {
     // main function to parse message received from go-audit
     public static String parse(String json) {
         
+        Map<String, Integer> types = new HashMap<>();
+        types.put("syscall", 1300);        // Syscall event
+        types.put("path", 1302);           // Filename path information
+        types.put("ipc", 1303);            // IPC record
+        types.put("socketcall", 1304);     // sys_socketcall arguments
+        types.put("config_change", 1305);  // Audit system configuration change
+        types.put("sockaddr", 1306);       // sockaddr copied as syscall arg
+        types.put("cwd", 1307);            // Current working directory
+        types.put("execve", 1309);         // execve arguments
+        types.put("ipc_set_perm", 1311);   // IPC new permissions record type
+        types.put("mq_open", 1312);        // POSIX MQ open record type
+        types.put("mq_sendrecv", 1313);    // POSIX MQ send/receive record type
+        types.put("mq_notify", 1314);      // POSIX MQ notify record type
+        types.put("mq_getsetattr", 1315);  // POSIX MQ get/set attribute record type
+        types.put("kernel_other", 1316);   // For use by 3rd party modules
+        types.put("fd_pair", 1317);        // audit record for pipe/socketpair
+        types.put("obj_pid", 1318);        // ptrace target
+        types.put("tty", 1319);            // Input on an administrative TTY
+        types.put("eoe", 1320);            // End of multi-record event
+        types.put("bprm_fcaps", 1321);     // Information about fcaps increasing perms
+        types.put("capset", 1322);         // Record showing argument to sys_capset
+        types.put("mmap", 1323);           // Record showing descriptor and flags in mmap
+        types.put("netfilter_pkt", 1324);  // Packets traversing netfilter chains
+        types.put("netfilter_cfg", 1325);  // Netfilter chain modifications
+        types.put("seccomp", 1326);        // Secure Computing event
+        types.put("proctitle", 1327);      // Proctitle emit event
+        types.put("feature_change", 1328); // audit log listing feature changes
+        types.put("replace", 1329);        // Replace auditd if this packet unanswerd
+
         // parse json string 
         JSONObject parsed = new JSONObject(json);
 
@@ -29,22 +58,22 @@ public class ParseGoAudit {
             Integer type = Integer.valueOf(messages.getJSONObject(i).getInt("type"));
             String data = messages.getJSONObject(i).getString("data");
 
-            if (type == AuditdConstants.Types.get("config_change") || type == AuditdConstants.Types.get("syscall")) {
+            if (type == types.get("config_change") || type == types.get("syscall")) {
             //if (type == 1305 || type == 1300) {
                 parse_syscall(data, result, uid_map);
-            } else if (type == AuditdConstants.Types.get("execve")) {
+            } else if (type == types.get("execve")) {
             //} else if (type == 1309) {
                 parse_execve(data, result);
-            } else if (type == AuditdConstants.Types.get("path")) {
+            } else if (type == types.get("path")) {
             //} else if (type == 1302) {
                 parse_path(data, result, uid_map);
-            } else if (type == AuditdConstants.Types.get("cwd")) {
+            } else if (type == types.get("cwd")) {
             //} else if (type == 1307) {
                 parse_cwd(data, result);
-            } else if (type == AuditdConstants.Types.get("sockaddr")) {
+            } else if (type == types.get("sockaddr")) {
             //} else if (type == 1306) {
                 parse_sockaddr(data, result);
-            } else if (type == AuditdConstants.Types.get("proctitle")) {
+            } else if (type == types.get("proctitle")) {
             //} else if (type == 1327) {
                 parse_proctitle(data, result);
             } else {
