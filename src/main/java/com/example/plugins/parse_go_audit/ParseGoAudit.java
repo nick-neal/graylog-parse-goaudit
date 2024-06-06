@@ -356,7 +356,7 @@ public class ParseGoAudit {
         if (AuditdConstants.MACHINES.containsKey(finalArch)) {
             arch.put("name", AuditdConstants.MACHINES.get(finalArch));
         } else {
-            arch.put("name","Unrecognized " + tArch + " architecture");
+            arch.put("name","Unrecognized " + finalArch + " architecture");
         }
 
         return arch;
