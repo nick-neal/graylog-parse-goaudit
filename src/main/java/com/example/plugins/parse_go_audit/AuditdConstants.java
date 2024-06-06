@@ -2,10 +2,9 @@ package com.example.plugins.parse_go_audit;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
 
 public class AuditdConstants {
-    public static Map<String, Integer> Types;
+    public static final Map<String, Integer> TYPES;
     public static final Map<String, Integer> ARCH = new HashMap<>();
     public static final Map<Integer, String> MACHINES = new HashMap<>();
     public static final Map<String, Map<String, String>> SYSCALLS = new HashMap<>();
@@ -13,35 +12,33 @@ public class AuditdConstants {
 
     static {
         Map<String, Integer> types = new HashMap<>();
-        types.put("syscall", 1300);        // Syscall event
-        types.put("path", 1302);           // Filename path information
-        types.put("ipc", 1303);            // IPC record
-        types.put("socketcall", 1304);     // sys_socketcall arguments
-        types.put("config_change", 1305);  // Audit system configuration change
-        types.put("sockaddr", 1306);       // sockaddr copied as syscall arg
-        types.put("cwd", 1307);            // Current working directory
-        types.put("execve", 1309);         // execve arguments
-        types.put("ipc_set_perm", 1311);   // IPC new permissions record type
-        types.put("mq_open", 1312);        // POSIX MQ open record type
-        types.put("mq_sendrecv", 1313);    // POSIX MQ send/receive record type
-        types.put("mq_notify", 1314);      // POSIX MQ notify record type
-        types.put("mq_getsetattr", 1315);  // POSIX MQ get/set attribute record type
-        types.put("kernel_other", 1316);   // For use by 3rd party modules
-        types.put("fd_pair", 1317);        // audit record for pipe/socketpair
-        types.put("obj_pid", 1318);        // ptrace target
-        types.put("tty", 1319);            // Input on an administrative TTY
-        types.put("eoe", 1320);            // End of multi-record event
-        types.put("bprm_fcaps", 1321);     // Information about fcaps increasing perms
-        types.put("capset", 1322);         // Record showing argument to sys_capset
-        types.put("mmap", 1323);           // Record showing descriptor and flags in mmap
-        types.put("netfilter_pkt", 1324);  // Packets traversing netfilter chains
-        types.put("netfilter_cfg", 1325);  // Netfilter chain modifications
-        types.put("seccomp", 1326);        // Secure Computing event
-        types.put("proctitle", 1327);      // Proctitle emit event
-        types.put("feature_change", 1328); // audit log listing feature changes
-        types.put("replace", 1329);        // Replace auditd if this packet unanswerd
-        // assign
-        Types = Collections.unmodifiableMap(types);
+        TYPES.put("syscall", 1300);        // Syscall event
+        TYPES.put("path", 1302);           // Filename path information
+        TYPES.put("ipc", 1303);            // IPC record
+        TYPES.put("socketcall", 1304);     // sys_socketcall arguments
+        TYPES.put("config_change", 1305);  // Audit system configuration change
+        TYPES.put("sockaddr", 1306);       // sockaddr copied as syscall arg
+        TYPES.put("cwd", 1307);            // Current working directory
+        TYPES.put("execve", 1309);         // execve arguments
+        TYPES.put("ipc_set_perm", 1311);   // IPC new permissions record type
+        TYPES.put("mq_open", 1312);        // POSIX MQ open record type
+        TYPES.put("mq_sendrecv", 1313);    // POSIX MQ send/receive record type
+        TYPES.put("mq_notify", 1314);      // POSIX MQ notify record type
+        TYPES.put("mq_getsetattr", 1315);  // POSIX MQ get/set attribute record type
+        TYPES.put("kernel_other", 1316);   // For use by 3rd party modules
+        TYPES.put("fd_pair", 1317);        // audit record for pipe/socketpair
+        TYPES.put("obj_pid", 1318);        // ptrace target
+        TYPES.put("tty", 1319);            // Input on an administrative TTY
+        TYPES.put("eoe", 1320);            // End of multi-record event
+        TYPES.put("bprm_fcaps", 1321);     // Information about fcaps increasing perms
+        TYPES.put("capset", 1322);         // Record showing argument to sys_capset
+        TYPES.put("mmap", 1323);           // Record showing descriptor and flags in mmap
+        TYPES.put("netfilter_pkt", 1324);  // Packets traversing netfilter chains
+        TYPES.put("netfilter_cfg", 1325);  // Netfilter chain modifications
+        TYPES.put("seccomp", 1326);        // Secure Computing event
+        TYPES.put("proctitle", 1327);      // Proctitle emit event
+        TYPES.put("feature_change", 1328); // audit log listing feature changes
+        TYPES.put("replace", 1329);        // Replace auditd if this packet unanswerd
  
         ARCH.put("64bit", 0x80000000);
         ARCH.put("little_endian", 0x40000000);
