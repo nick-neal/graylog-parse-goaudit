@@ -54,7 +54,7 @@ public class ParseGoAudit {
         }
 
         // build human readable message
-        //build_summary(result);
+        build_summary(result);
 
         // return json string
         return result.toString();
@@ -106,7 +106,7 @@ public class ParseGoAudit {
     private static void parse_execve(String data, JSONObject result) {
         // parse data into hashmap
         String[] data_items = data.split(" ");
-        Map<String, String> execve_map = split_fields(data_items);
+        Map<String, String> execve_map = split_fields(data_items); 
 
         // if no argc, return map
         if (!execve_map.containsKey("argc")) {
@@ -118,7 +118,7 @@ public class ParseGoAudit {
         int argc = Integer.valueOf(execve_map.remove("argc"));
         
         // prepare to build command string
-        StringBuilder command = new StringBuilder();
+        StringJoiner command = new StringJoiner(" ");
 
         // iterate thru args to build command string
         for (int i = 0; i < argc; i++) {
@@ -130,7 +130,7 @@ public class ParseGoAudit {
            if (!execve_map.containsKey(find_arg)) continue;
 
            // append arg to command string
-           command.append(convert_value(execve_map.remove(find_arg), true));
+           command.add(convert_value(execve_map.remove(find_arg), true));
         }
 
         // compile execve command string and add object to root result.
@@ -424,5 +424,134 @@ public class ParseGoAudit {
         return data;
     }
 
-    //private static void build_summary(JSONObject result) {}
+    private static JSONObject find_path_type(JSONArray paths, String type) {
+        for (int i = 0; i < paths.length(); i++) {
+            JSONObject path = paths.getJSONObject(i);
+            if (path.get("nametype").equals(type)) {
+                return path;
+            }
+        }
+
+        return null;
+    }
+
+    private static String get_path_name(JSONObject path) {
+        if (path != null && path.has("name")) {
+            return path.get("name");
+        } 
+
+        return null;
+    }
+
+    private static void build_summary(JSONObject result) {
+        StringJoiner summary = new StringJoiner(" ");
+
+        // check if syscall is logged
+        if result.has("syscall") {
+            // if auid exists and is not equal to uid, output auid user's name
+            if (
+                result.getJSONObject("syscall").has("auid") && 
+                result.getJSONObject("syscall").has("uid") &&
+                !(result.getJSONObject("syscall").getJSONObject("auid").get("id").equals(result.getJSONObject("syscall").getJSONObject("uid").get("id")))
+            ) {
+                summary.add(result.getJSONObject("syscall").getJSONObject("auid").get("name"));
+                summary.add("as");
+                //summary += (result.get("syscall").get("auid").get("name") + " as ");
+            }
+
+            // who did it?
+            if (result.getJSONObject("syscall").has("uid")) {
+                summary.add(result.getJSONObject("syscall").getJSONObject("uid").get("name"));
+                //summary += (result.get("syscall").get("uid").get("name") + " ");
+            }
+
+            // succeeded or failed?
+            if (result.getJSONObject("syscall").has("success")) {
+                if (result.getJSONObject("syscall").get("success").equals("yes")) {
+                    summary.add("succeeded to");
+                    //summary += "succeeded to ";
+                } else {
+                    summary.add("failed to ");
+                    //summary += "failed to ";
+                }
+            }
+
+            // to do what?
+            if (result.getJSONObject("syscall").has("name")) {
+                summary.add(result.getJSONObject("syscall").get("name"));
+                //summary += (result.get("syscall").get("name") + " ");
+            } else {
+                // will output "[arch] syscall(syscall number)"
+                // [386] syscall(42)
+                summary.add("[" + result.getJSONObject("syscall").getJSONObject("arch").get("name") + "]");
+                summary.add("syscall(" + result.getJSONObject("syscall").get("id") + ")");
+                //summary += ("[" + result.get("syscall").get("arch").get("name") + "] syscall(" + result.get("syscall").get("id") + ") ");
+            } 
+
+            boolean includeCmd = false;
+            String path;
+
+            // if execve was called, get command
+            if (result.has("execve") && result.getJSONObject("execve").has("command")) {
+                path = result.getJSONObject("execve").get("command");
+                summary.add(path.split(" ",2)[0]);
+                //summary += (execve[0] + " ");
+            // if cretain syscall functions were called, handle accordingly
+            } else if (result.getJSONObject("syscall").has("name")) {
+                String syscall_name = result.getJSONObject("syscall").get("name");
+                // capture rename params
+                if (syscall_name.equals("rename")) {
+                    summary.add(get_path_name(find_path_type(result.getJSONArray("paths"), "DELETE")));
+                    summary.add("to");
+                    summary.add(get_path_name(find_path_type(result.getJSONArray("paths"), "CREATE")));
+                // capture network info
+                } else if (syscall_name.equals("bind") || syscall_name.equals("connect") || syscall_name.equals("sendto")) {
+                    summary.add("to");
+                    includeCmd = true;
+                    if (result.has("sockaddr")) {
+                        // if IP address & port
+                        if (result.getJSONObject("sockaddr").has("ip") && result.getJSONObject("sockaddr").has("port")) {
+                            summary.add(result.getJSONObject("sockaddr").get("ip") + ":" + result.getJSONObject("sockaddr").get("port"));
+                        // if socket file
+                        } else if (result.getJSONObject("sockaddr").has("path")) {
+                            summary.add(result.getJSONObject("sockaddr").get("path"));
+                        } else {
+                            summary.add("unknown address");
+                        }
+                    } else {
+                        summary.add("unknown address");
+                    }
+                // everything else
+                } else {
+                    JSONObject created;
+                    JSONObject normal;
+                    if ((created = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
+                        path = get_path_name(created);
+                    } else if ((normal = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
+                        path = get_path_name(normal);
+                    } else {
+                        path = "unknown path";
+                    }
+
+                    summary.add(path);
+                }
+            }
+
+            if (result.getJSONObject("syscall").has("executable") && !(result.getJSONObject("syscall").get("executable").equals(path))) {
+                summary.add("via");
+                summary.add(result.getJSONObject("syscall").get("executable"));
+            }
+
+            if (includeCmd && result.getJSONObject("syscall").has("command")) {
+                summary.add("as");
+                summary.add(result.getJSONObject("syscall").get("command"));
+            }
+        
+        } else {
+            summary.add("none");
+        }
+
+        result.put("summary", summary.toString())
+
+    }
 }
