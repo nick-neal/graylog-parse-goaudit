@@ -352,7 +352,7 @@ public class ParseGoAudit {
             tArch ^= 0x20000000;
         }
 
-        int finalArch = Integer.parseInt(tArch);
+        int finalArch = (int) tArch;
         if (AuditdConstants.MACHINES.containsKey(finalArch)) {
             arch.put("name", AuditdConstants.MACHINES.get(finalArch));
         } else {
