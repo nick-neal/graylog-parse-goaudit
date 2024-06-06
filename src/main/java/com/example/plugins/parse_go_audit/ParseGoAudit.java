@@ -324,7 +324,8 @@ public class ParseGoAudit {
         if (!data.containsKey("arch")) return null;
 
 
-        int tArch = Integer.parseInt(data.get("arch"), 16);
+        //int tArch = Integer.parseInt(data.get("arch"), 16);
+        long tArch = Long.parseLong(data.get("arch"), 16);
         data.remove("arch");
 
         data.put("arch", "");
