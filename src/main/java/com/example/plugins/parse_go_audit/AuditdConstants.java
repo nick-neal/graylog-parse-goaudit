@@ -40,9 +40,9 @@ public class AuditdConstants {
         TYPES.put("feature_change", 1328); // audit log listing feature changes
         TYPES.put("replace", 1329);        // Replace auditd if this packet unanswerd
  
-        ARCH.put("64bit", 0x80000000);
-        ARCH.put("little_endian", 0x40000000);
-        ARCH.put("convention_mips64_n32", 0x20000000);
+        ARCH.put("64bit", 2147483648); //0x80000000
+        ARCH.put("little_endian", 1073741824); //0x40000000
+        ARCH.put("convention_mips64_n32", 536870912); //0x20000000
 
         MACHINES.put(0, "none");         // Unknown machine.
         MACHINES.put(1, "m32");          // AT&T WE32100.

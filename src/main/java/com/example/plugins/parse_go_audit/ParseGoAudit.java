@@ -67,7 +67,7 @@ public class ParseGoAudit {
         Map<String, String> syscall_map = split_fields(data_items);
 
         // parse arch info into seperate hashmap
-        //Map<String, Object> arch_map = map_arch(syscall_map);
+        Map<String, Object> arch_map = map_arch(syscall_map);
 
         // parse uid info into seperate hashmaps
         Map<String, String> id_map = map_uid("uid", syscall_map, uid_map);
@@ -324,7 +324,8 @@ public class ParseGoAudit {
         if (!data.containsKey("arch")) return null;
 
 
-        int tArch = Integer.parseInt(data.remove("arch"), 16);
+        int tArch = Integer.parseInt(data.get("arch"), 16);
+        data.remove("arch");
 
         data.put("arch", "");
         Map<String, Object> arch = new HashMap<>();
