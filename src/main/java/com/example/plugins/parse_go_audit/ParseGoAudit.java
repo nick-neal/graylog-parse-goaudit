@@ -10,7 +10,7 @@ public class ParseGoAudit {
     // main function to parse message received from go-audit
     public static String parse(String json) {
         
-        Map<String, Integer> types = new HashMap<>();
+        Map types = new HashMap();
         types.put("syscall", 1300);        // Syscall event
         types.put("path", 1302);           // Filename path information
         types.put("ipc", 1303);            // IPC record
