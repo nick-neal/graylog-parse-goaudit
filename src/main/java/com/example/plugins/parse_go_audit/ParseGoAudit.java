@@ -11,7 +11,7 @@ public class ParseGoAudit {
     public static String parse(String json) {
         
         Map types = new HashMap();
-        types.put("syscall", 1300);        // Syscall event
+        types.put("syscall", new Integer(1300));        // Syscall event
         types.put("path", 1302);           // Filename path information
         types.put("ipc", 1303);            // IPC record
         types.put("socketcall", 1304);     // sys_socketcall arguments
