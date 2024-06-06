@@ -493,7 +493,7 @@ public class ParseGoAudit {
             } 
 
             boolean includeCmd = false;
-            String path;
+            String path = null;
 
             // if execve was called, get command
             if (result.has("execve") && result.getJSONObject("execve").has("command")) {
