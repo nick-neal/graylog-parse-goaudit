@@ -29,22 +29,22 @@ public class ParseGoAudit {
             Integer type = Integer.valueOf(messages.getJSONObject(i).getInt("type"));
             String data = messages.getJSONObject(i).getString("data");
 
-            if (type == AuditdConstants.TYPES.get("config_change") || type == AuditdConstants.TYPES.get("syscall")) {
+            if (type == AuditdConstants.Types.get("config_change") || type == AuditdConstants.Types.get("syscall")) {
             //if (type == 1305 || type == 1300) {
                 parse_syscall(data, result, uid_map);
-            } else if (type == AuditdConstants.TYPES.get("execve")) {
+            } else if (type == AuditdConstants.Types.get("execve")) {
             //} else if (type == 1309) {
                 parse_execve(data, result);
-            } else if (type == AuditdConstants.TYPES.get("path")) {
+            } else if (type == AuditdConstants.Types.get("path")) {
             //} else if (type == 1302) {
                 parse_path(data, result, uid_map);
-            } else if (type == AuditdConstants.TYPES.get("cwd")) {
+            } else if (type == AuditdConstants.Types.get("cwd")) {
             //} else if (type == 1307) {
                 parse_cwd(data, result);
-            } else if (type == AuditdConstants.TYPES.get("sockaddr")) {
+            } else if (type == AuditdConstants.Types.get("sockaddr")) {
             //} else if (type == 1306) {
                 parse_sockaddr(data, result);
-            } else if (type == AuditdConstants.TYPES.get("proctitle")) {
+            } else if (type == AuditdConstants.Types.get("proctitle")) {
             //} else if (type == 1327) {
                 parse_proctitle(data, result);
             } else {
