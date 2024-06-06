@@ -32,20 +32,20 @@ public class ParseGoAudit {
             if (type.equals(AuditdConstants.TYPES.get("config_change")) || type.equals(AuditdConstants.TYPES.get("syscall"))) {
             //if (type == 1305 || type == 1300) {
                 parse_syscall(data, result, uid_map);
-            //} else if (type == AuditdConstants.TYPES.get("execve")) {
-            } else if (type == 1309) {
+            } else if (type.equals(AuditdConstants.TYPES.get("execve"))) {
+            //} else if (type == 1309) {
                 parse_execve(data, result);
-            //} else if (type == AuditdConstants.TYPES.get("path")) {
-            } else if (type == 1302) {
+            } else if (type.equals(AuditdConstants.TYPES.get("path"))) {
+            //} else if (type == 1302) {
                 parse_path(data, result, uid_map);
-            //} else if (type == AuditdConstants.TYPES.get("cwd")) {
-            } else if (type == 1307) {
+            } else if (type.equals(AuditdConstants.TYPES.get("cwd"))) {
+            //} else if (type == 1307) {
                 parse_cwd(data, result);
-            //} else if (type == AuditdConstants.TYPES.get("sockaddr")) {
-            } else if (type == 1306) {
+            } else if (type.equals(AuditdConstants.TYPES.get("sockaddr"))) {
+            //} else if (type == 1306) {
                 parse_sockaddr(data, result);
-            //} else if (type == AuditdConstants.TYPES.get("proctitle")) {
-            } else if (type == 1327) {
+            } else if (type.equals(AuditdConstants.TYPES.get("proctitle"))) {
+            //} else if (type == 1327) {
                 parse_proctitle(data, result);
             } else {
                 result.getJSONArray("unknown").put(data);
