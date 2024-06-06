@@ -2,9 +2,10 @@ package com.example.plugins.parse_go_audit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 public class AuditdConstants {
-    public static final Map<String, Integer> Types;
+    public static final Map<String, Integer> TYPES;
     public static final Map<String, Integer> ARCH = new HashMap<>();
     public static final Map<Integer, String> MACHINES = new HashMap<>();
     public static final Map<String, Map<String, String>> SYSCALLS = new HashMap<>();
@@ -40,7 +41,7 @@ public class AuditdConstants {
         types.put("feature_change", 1328); // audit log listing feature changes
         types.put("replace", 1329);        // Replace auditd if this packet unanswerd
         // assign
-        Types = Collections.unmodifiableMap(types);
+        TYPES = Collections.unmodifiableMap(types);
  
         ARCH.put("64bit", 0x80000000);
         ARCH.put("little_endian", 0x40000000);
