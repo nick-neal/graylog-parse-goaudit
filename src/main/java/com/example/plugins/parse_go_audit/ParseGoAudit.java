@@ -94,7 +94,7 @@ public class ParseGoAudit {
 
         // convert to JSONObject and add to root result
         result.put("syscall", new JSONObject(syscall_map));
-        //if (arch_map != null) result.getJSONObject("syscall").put("arch", new JSONObject(arch_map));
+        if (arch_map != null) result.getJSONObject("syscall").put("arch", new JSONObject(arch_map));
         if (id_map != null) result.getJSONObject("syscall").put("uid", new JSONObject(id_map));
         if (auid_map != null) result.getJSONObject("syscall").put("auid", new JSONObject(auid_map));
         if (euid_map != null) result.getJSONObject("syscall").put("euid", new JSONObject(euid_map));
@@ -334,26 +334,27 @@ public class ParseGoAudit {
         arch.put("endianness", null);
         arch.put("name", null);
 
-        if ((tArch & AuditdConstants.ARCH.get("64bit")) == 0) {
+        if ((tArch & 0x80000000) == 0) {
             arch.put("bits", 32);
         } else {
-            tArch ^= AuditdConstants.ARCH.get("64bit");
+            tArch ^= 0x80000000;
             arch.put("bits", 64);
         }
 
-        if ((tArch & AuditdConstants.ARCH.get("little_endian")) == 0) {
+        if ((tArch & 0x40000000) == 0) {
             arch.put("endianness", "big");
         } else {
-            tArch ^= AuditdConstants.ARCH.get("little_endian");
+            tArch ^= 0x40000000;
             arch.put("endianness", "little");
         }
 
-        if ((tArch & AuditdConstants.ARCH.get("convention_mips64_n32")) != 0) {
-            tArch ^= AuditdConstants.ARCH.get("convention_mips64_n32");
+        if ((tArch & 0x20000000) != 0) {
+            tArch ^= 0x20000000;
         }
 
-        if (AuditdConstants.MACHINES.containsKey(tArch)) {
-            arch.put("name", AuditdConstants.MACHINES.get(tArch));
+        int finalArch = Integer.parseInt(tArch);
+        if (AuditdConstants.MACHINES.containsKey(finalArch)) {
+            arch.put("name", AuditdConstants.MACHINES.get(finalArch));
         } else {
             arch.put("name","Unrecognized " + tArch + " architecture");
         }
