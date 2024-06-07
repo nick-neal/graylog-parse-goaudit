@@ -533,9 +533,9 @@ public class ParseGoAudit {
                 } else {
                     JSONObject created;
                     JSONObject normal;
-                    if ((created = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
+                    if (result.has("paths") && (created = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
                         path = get_path_name(created);
-                    } else if ((normal = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
+                    } else if (result.has("paths") && (normal = find_path_type(result.getJSONArray("paths"), "CREATE")) != null) {
                         path = get_path_name(normal);
                     } else {
                         path = "unknown path";
