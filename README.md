@@ -8,9 +8,9 @@ This is a personal project that has had limited testing on production workloads.
 ## Pre-Requisites
 You should already have an instance of graylog-server 5.2 or higher (*Note: Earlier versions have not been tested*) confiured and running, as well as go-audit input forwarding to graylog-server via syslog.
 
-You can learn more about graylog-server [here]().
+You can learn more about graylog-server [here](https://go2docs.graylog.org/current/what_is_graylog/what_is_graylog.htm).
 
-You can learn more about go-audit [here]().
+You can learn more about go-audit [here](https://slack.engineering/syscall-auditing-at-scale/).
 
 ## Installation
 ### Compile the plugin jar
